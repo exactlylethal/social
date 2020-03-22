@@ -28,7 +28,7 @@
             <div class="form-group row ">
                 <label class="col-sm-1 col-form-label">Пароль:</label>
                 <div class="col-sm-6 mr-auto">
-                    <input type="password" name="password"
+                    <input type="password" name="password2"
                            class="form-control ${(password2Error??)?string('is-invalid', '')}" placeholder="Повторите пароль"/>
                     <#if password2Error??>
                         <div class="invalid-feedback">
