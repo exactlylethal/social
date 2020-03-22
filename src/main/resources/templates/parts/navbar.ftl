@@ -12,17 +12,17 @@
             <li class="nav-item">
                 <a class="nav-link" href="/">Домашняя страница</a>
             </li>
-
-            <li class="nav-item">
-                <a class="nav-link" href="/main">Опросы</a>
-            </li>
-
+            <#if name!="">
+                <li class="nav-item">
+                    <a class="nav-link" href="/main">Опросы</a>
+                </li>
+            </#if>
             <#if isAdmin>
                 <li class="nav-item">
                     <a class="nav-link" href="/user">Список пользователей</a>
                 </li>
             </#if>
-            <#if user??>
+            <#if name!= "">
                 <li class="nav-item">
                     <a class="nav-link" href="/user/profile">Профиль</a>
                 </li>
@@ -30,11 +30,11 @@
         </ul>
         <div class="navbar-text mr-3">${name}</div>
         <#if !user??>
-        <a class="btn btn-primary ml-2" href="/registration" role="button">Зарегистрироваться</a>
-            <a class="btn btn-primary ml-2"  href="/login" role="button">У меня уже есть аккаунт</a>
+            <a class="btn btn-primary ml-2" href="/registration" role="button">Зарегистрироваться</a>
+            <a class="btn btn-primary ml-2" href="/login" role="button">У меня уже есть аккаунт</a>
         </#if>
-        <#if user??>
-        <@l.logout />
+        <#if name!="">
+            <@l.logout />
         </#if>
     </div>
 </nav>

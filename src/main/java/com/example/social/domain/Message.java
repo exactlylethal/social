@@ -1,16 +1,23 @@
 package com.example.social.domain;
 
 
+import org.hibernate.validator.constraints.Length;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 
 @Entity
-public class Poll {
+public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @NotBlank(message = "Сообщение не может быть пустым")
+    @Length(max = 2048, message = "Слишком длинное сообщение")
     private String text;
+
+    @Length(max = 255, message = "Слишком длинное сообщение")
     private String tag;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -19,14 +26,15 @@ public class Poll {
 
     private String filename;
 
-    public Poll(){
+    public Message(){
     }
 
-    public Poll(String text, String tag, User user) {
+    public Message(String text, String tag, User user) {
         this.author = user;
         this.text = text;
         this.tag = tag;
     }
+
 
     public String getAuthorName(){
         return author != null ? author.getUsername() : "<none>";
