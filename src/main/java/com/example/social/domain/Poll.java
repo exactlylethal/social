@@ -5,25 +5,24 @@ import javax.persistence.*;
 
 
 @Entity
-public class Message {
+public class Poll {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    private Long id;
 
     private String text;
     private String tag;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(columnDefinition = "user_id")
     private User author;
 
     private String filename;
 
-
-
-    public Message(){
+    public Poll(){
     }
 
-    public Message(String text, String tag, User user) {
+    public Poll(String text, String tag, User user) {
         this.author = user;
         this.text = text;
         this.tag = tag;
@@ -33,11 +32,11 @@ public class Message {
         return author != null ? author.getUsername() : "<none>";
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

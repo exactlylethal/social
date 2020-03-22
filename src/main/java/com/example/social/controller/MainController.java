@@ -1,6 +1,6 @@
 package com.example.social.controller;
 
-import com.example.social.domain.Message;
+import com.example.social.domain.Poll;
 import com.example.social.domain.User;
 import com.example.social.repo.MessageRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +33,7 @@ public class MainController {
 
     @GetMapping("/main")
     public String main(@RequestParam(required = false, defaultValue = "")String filter, Model model){
-        Iterable<Message> messages = messageRepo.findAll();
+        Iterable<Poll> messages = messageRepo.findAll();
 
         if(filter != null && !filter.isEmpty()){
             messages = messageRepo.findByTag(filter);
@@ -53,7 +53,7 @@ public class MainController {
             @RequestParam ("file") MultipartFile file,
             Map<String, Object> model) throws IOException {
 
-        Message message = new Message(text, tag, user);
+        Poll poll = new Poll(text, tag, user);
         if(file != null && !file.getOriginalFilename().isEmpty()){
             File uploadDir = new File(uploadPath);
             if(!uploadDir.exists()){
@@ -62,10 +62,10 @@ public class MainController {
             String uuidFile= UUID.randomUUID().toString();
             String resultFilename = uuidFile + "." + file.getOriginalFilename();
             file.transferTo(new File(uploadPath + "/" + resultFilename));
-            message.setFilename(resultFilename);
+            poll.setFilename(resultFilename);
         }
-        messageRepo.save(message);
-        Iterable<Message> messages = messageRepo.findAll();
+        messageRepo.save(poll);
+        Iterable<Poll> messages = messageRepo.findAll();
         model.put("messages", messages);
         return "main";
     }
