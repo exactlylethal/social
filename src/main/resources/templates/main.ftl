@@ -11,14 +11,13 @@
         </div>
     </div>
 
-    <a class="btn btn-primary" href="/poll" role="button">
+    <a class="btn btn-primary" href="/pollCreate" role="button">
         Добавить новый опрос
     </a>
 
 
-
     <div class="card-columns">
-        <#list messages as message>
+        <#list message as message>
             <div class="card my-3">
                 <div>
                     <#if message.filename??>
@@ -26,11 +25,11 @@
                     </#if>
                 </div>
                 <div class="m-2">
-                    <#if message.></#if>
-                    <span>${message.text}</span>
+                    <#if poll.id??></#if>
+                    <span>${poll.name}</span>
                 </div>
                 <div class="card-footer text-muted">
-                    Автор: ${message.authorName}
+                    Автор: ${poll.authorName}
                 </div>
             </div>
         <#else>

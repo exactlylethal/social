@@ -46,7 +46,6 @@ public class MainController {
     @GetMapping("/main")
     public String main(@RequestParam(required = false, defaultValue = "") String filter, Model model) {
         Iterable<Message> messages = messageRepo.findAll();
-
         if (filter != null && !filter.isEmpty()) {
             messages = messageRepo.findByTag(filter);
         } else {
@@ -95,19 +94,41 @@ public class MainController {
     @PostMapping("/question")
     public String addQuestion(@AuthenticationPrincipal User user,
                               @Valid Message message,
-                              Poll poll,
                               BindingResult bindingResult,
-                              Model model) {
-        poll.setAuthor(user);
-
+                              Model model)
+    {
+        message.setAuthor(user);
         if (bindingResult.hasErrors()) {
             Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
             model.mergeAttributes(errorsMap);
             model.addAttribute("message", message);
         }
-            Iterable<Message> messages = messageRepo.findAll();
-            model.addAttribute("messages", messages);
+        Iterable<Message> messages = messageRepo.findAll();
+        model.addAttribute("messages", messages);
         messageRepo.save(message);
-            return "poll";
+        return "poll";
     }
+
+    @GetMapping("/pollCreate")
+    public String pollCreate(Map<String, Object> model) {
+        return "pollCreate";
+    }
+
+    @PostMapping("/pollCreate")
+    public String addPoll(@AuthenticationPrincipal User user,
+                          Poll poll,
+                          Model model,
+                          BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
+            model.mergeAttributes(errorsMap);
+            model.addAttribute("poll", poll);
+        }
+        poll.setAuthor(user);
+        Iterable<Poll> polls = pollRepo.findAll();
+        model.addAttribute("polls", polls);
+        pollRepo.save(poll);
+        return "poll";
+    }
+
 }
