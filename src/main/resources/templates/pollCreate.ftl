@@ -12,14 +12,8 @@
             </div>
         </#if>
     </div>
-    <div class="form-group mr-auto bg-warning" style="width:400px">
-        <div class="custom-file">
-            <input type="file" name="file" id="customFile">
-            <label class="custom-file-label" for="customFile">Выберите файл</label>
-        </div>
-    </div>
     <input type="hidden" name="_csrf" value="${_csrf.token}" />
-    <button type="submit" class="btn btn-primary" href="/poll">Опубликовать</button>
+    <button type="submit" class="button">Опубликовать</button>
 </form>
 </div>
 </div>

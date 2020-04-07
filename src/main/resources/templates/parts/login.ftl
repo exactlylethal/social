@@ -52,7 +52,7 @@
             </div>
         </#if>
         <input type="hidden" name="_csrf" value="${_csrf.token}"/>
-        <button class="btn btn-primary" type="submit"><#if isRegisterForm>Create<#else>Войти</#if></button>
+        <button class="btn btn-primary" type="submit"><#if isRegisterForm>Создать<#else>Войти</#if></button>
     </form>
 </#macro>
 

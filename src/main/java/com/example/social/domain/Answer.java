@@ -5,10 +5,11 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.Set;
 
 
 @Entity
-public class Message {
+public class Answer {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -20,16 +21,25 @@ public class Message {
     @Length(max = 255, message = "Слишком длинное сообщение")
     private String tag;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(columnDefinition = "user_id")
     private User author;
 
+    @ManyToOne
+    @JoinColumn(name="poll_id")
+    private Poll poll;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "answer", fetch = FetchType.EAGER, orphanRemoval = true)
+    private Set<Vote> votes;
+
     private String filename;
 
-    public Message(){
+
+
+    public Answer(){
     }
 
-    public Message(String text, String tag, User user) {
+    public Answer(String text, String tag, User user) {
         this.author = user;
         this.text = text;
         this.tag = tag;
@@ -79,4 +89,13 @@ public class Message {
     public void setFilename(String filename) {
         this.filename = filename;
     }
+
+    public Poll getPoll() {
+        return poll;
+    }
+
+    public void setPoll(Poll poll) {
+        this.poll = poll;
+    }
+
 }

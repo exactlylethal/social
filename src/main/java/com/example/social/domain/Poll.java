@@ -1,9 +1,10 @@
 package com.example.social.domain;
 
-import org.hibernate.validator.constraints.Length;
 
+import org.hibernate.validator.constraints.Length;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.Set;
 
 @Entity
 public class Poll {
@@ -15,11 +16,12 @@ public class Poll {
     @Length(max = 2048, message = "Слишком длинное сообщение")
     private String name;
 
-    private Long votes;
-
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(columnDefinition = "user_id")
     private User author;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "poll", fetch = FetchType.EAGER, orphanRemoval = true)
+    private Set<Answer> answers;
 
     public Poll() {
     }
@@ -27,6 +29,10 @@ public class Poll {
     public Poll(User user, String name){
         this.name = name;
         this.author = user;
+    }
+
+    public String getAuthorName(){
+        return author != null ? author.getUsername() : "<none>";
     }
 
     public Long getId() {
@@ -45,19 +51,19 @@ public class Poll {
         this.name = name;
     }
 
-    public Long getVotes() {
-        return votes;
-    }
-
-    public void setVotes(Long votes) {
-        this.votes = votes;
-    }
-
     public User getAuthor() {
         return author;
     }
 
     public void setAuthor(User author) {
         this.author = author;
+    }
+
+    public Set<Answer> getAnswers() {
+        return answers;
+    }
+
+    public void setAnswers(Set<Answer> answers) {
+        this.answers = answers;
     }
 }

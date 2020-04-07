@@ -4,12 +4,12 @@
 <@c.page>
     <#if Session?? && Session.SPRING_SECURITY_LAST_EXCEPTION??>
         <div class="alert alert-danger" role="alert">
-            ${Session.SPRING_SECURITY_LAST_EXCEPTION.message}
+            ${Session.SPRING_SECURITY_LAST_EXCEPTION.answer}
         </div>
     </#if>
-    <#if message??>
+    <#if answer??>
         <div class="alert alert-{$messageType}" role="alert">
-            ${message}
+            ${answer}
         </div>
     </#if>
     <@l.login "/login" false/>

@@ -1,6 +1,4 @@
 <#import "parts/common.ftl" as c>
-
-
 <@c.page>
     <div class="form-row mt-3">
         <div class="form-group col-md-6">
@@ -10,31 +8,24 @@
             </form>
         </div>
     </div>
-
-    <a class="btn btn-primary" href="/pollCreate" role="button">
-        Добавить новый опрос
-    </a>
-
-
     <div class="card-columns">
-        <#list message as message>
+        <#list polls as poll>
             <div class="card my-3">
-                <div>
-                    <#if message.filename??>
-                        <img src="/img/${message.filename}" class="card-img-top" alt="">
-                    </#if>
-                </div>
                 <div class="m-2">
-                    <#if poll.id??></#if>
-                    <span>${poll.name}</span>
-                </div>
-                <div class="card-footer text-muted">
-                    Автор: ${poll.authorName}
+                    <h6><span>Название опроса: ${poll.name}</span><br/></h6>
+                    <#if poll.author??>
+                    <span>Автор опроса: ${poll.authorName}</span>
+                    </#if>
+                    <a class="btn btn-primary" href="/showPoll?poll_id=${poll.id}" role="button">Перейти к опросу</a>
                 </div>
             </div>
         <#else>
-            В данный момент опросов нет
+            Опросов нет
         </#list>
+    </div>
+    <a class="btn btn-primary" href="/pollCreate" role="button">
+        Добавить новый опрос
+    </a>
     </div>
 </@c.page>
 

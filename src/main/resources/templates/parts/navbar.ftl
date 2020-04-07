@@ -9,10 +9,12 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
+            <#if !user??>
             <li class="nav-item">
                 <a class="nav-link" href="/">Домашняя страница</a>
             </li>
-            <#if name!="">
+            </#if>
+            <#if user??>
                 <li class="nav-item">
                     <a class="nav-link" href="/main">Опросы</a>
                 </li>
@@ -22,7 +24,7 @@
                     <a class="nav-link" href="/user">Список пользователей</a>
                 </li>
             </#if>
-            <#if name!= "">
+            <#if user??>
                 <li class="nav-item">
                     <a class="nav-link" href="/user/profile">Профиль</a>
                 </li>
@@ -33,7 +35,7 @@
             <a class="btn btn-primary ml-2" href="/registration" role="button">Зарегистрироваться</a>
             <a class="btn btn-primary ml-2" href="/login" role="button">У меня уже есть аккаунт</a>
         </#if>
-        <#if name!="">
+        <#if user??>
             <@l.logout />
         </#if>
     </div>
