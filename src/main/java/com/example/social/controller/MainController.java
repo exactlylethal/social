@@ -3,12 +3,9 @@ package com.example.social.controller;
 import com.example.social.domain.Answer;
 import com.example.social.domain.Poll;
 import com.example.social.domain.User;
-import com.example.social.domain.Vote;
-import com.example.social.repo.MessageRepo;
+import com.example.social.repo.AnswerRepo;
 import com.example.social.repo.PollRepo;
-import com.example.social.repo.VoteRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,23 +17,30 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.Map;
-import java.util.Set;
 
 @Controller
 public class MainController {
     @Autowired
-    private MessageRepo messageRepo;
+    private AnswerRepo answerRepo;
 
     @Autowired
     private PollRepo pollRepo;
 
     @GetMapping("/")
-    public String every(Map<String, Object> model){
+    public String every(Map<String, Object> model) {
         return "greeting";
     }
 
+
     @GetMapping("/greeting")
-    public String greeting(Map<String, Object> model, User user) {
+    public String greeting(@RequestParam(required = false, defaultValue = "") Long userId,
+                           Map<String, Object> model,
+                           User user) {
+        boolean isUser = false;
+        if (userId != null) {
+            isUser = true;
+        }
+        model.put("isUser", isUser);
         return "main";
     }
 
@@ -66,20 +70,19 @@ public class MainController {
         Poll poll = pollRepo.findById(pollId).orElseThrow(() -> new RuntimeException("Poll id not found" + pollId));
         model.put("poll", poll);
         boolean showButton = false;
-        int size = messageRepo.findByAuthorIdAndPollId(user.getId(), pollId).size();
+        int size = answerRepo.findByAuthorIdAndPollId(user.getId(), pollId).size();
         if (size == 0) {
             showButton = true;
         }
         model.put("showButton", showButton);
-            return "individualPoll";
-        }
+        return "individualPoll";
+    }
 
     @PostMapping("/pollCreate")
     public String add(@AuthenticationPrincipal User user,
                       Poll poll,
-            BindingResult bindingResult,
-            Model model
-    ) throws IOException {
+                      BindingResult bindingResult,
+                      Model model) {
         poll.setAuthor(user);
         if (bindingResult.hasErrors()) {
             Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
@@ -99,9 +102,19 @@ public class MainController {
         return "question";
     }
 
+    @GetMapping("/error")
+    public String error(@RequestParam("poll_id") Long pollId,
+                        Map<String, Object> model) {
+        model.put("poll_id", pollId);
+        return "question";
+    }
+
+
+
     @PostMapping("/question")
     public String addQuestion(@AuthenticationPrincipal User user,
                               @Valid Answer answer,
+                              @RequestParam("poll_id") Long pollId,
                               BindingResult bindingResult,
                               Model model,
                               @RequestParam Map<String, String> reqParam) {
@@ -112,12 +125,17 @@ public class MainController {
             model.addAttribute("message", answer);
         }
         Long poll_id = Long.parseLong(reqParam.get("poll_id"));
-        Poll poll = pollRepo.findById(poll_id).orElseThrow(()-> new RuntimeException("Poll id not found" + poll_id));
+        Poll poll = pollRepo.findById(poll_id).orElseThrow(() -> new RuntimeException("Poll id not found" + poll_id));
         answer.setPoll(poll);
         poll.getAnswers().add(answer);
         Poll newPoll = pollRepo.save(poll);
         model.addAttribute("poll", newPoll);
-
+        boolean showButton = false;
+        int size = answerRepo.findByAuthorIdAndPollId(user.getId(), pollId).size();
+        if (size == 0) {
+            showButton = true;
+        }
+        model.addAttribute("showButton", showButton);
         return "individualPoll";
     }
 }

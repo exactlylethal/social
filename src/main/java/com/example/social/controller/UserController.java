@@ -41,7 +41,7 @@ public class UserController {
             @RequestParam Map<String, String> form,
             @RequestParam("userId") User user) {
         userService.saveUser(user, username, form);
-        return "redirect:/user";
+        return "redirect:/main";
     }
 
     @GetMapping("profile")
@@ -58,6 +58,6 @@ public class UserController {
             @RequestParam String password,
             @RequestParam String email) {
         userService.updateProfile(user, password, email);
-        return "redirect:/user/profile";
+        return "redirect:/main";
     }
 }

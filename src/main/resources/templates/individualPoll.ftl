@@ -9,9 +9,11 @@
             <br>
         </#list>
     </#if>
-<#if !showButton??>
-            <div class="form-group mt-2">
-                <a class="btn btn-primary" href="/question?poll_id=${poll.id}" role="button">Добавить новый ответ</a>
-            </div>
-</#if>
+    <#if showButton == true>
+        <div class="form-group mt-2">
+            <a class="btn btn-primary" href="/question?poll_id=${poll.id}" role="button">Добавить новый ответ</a>
+        </div>
+    <#elseif showButton == false>
+        <h6>Вы уже дали ответ на этот опрос</h6>
+    </#if>
 </@c.page>

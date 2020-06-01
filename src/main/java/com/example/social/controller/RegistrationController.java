@@ -42,7 +42,7 @@ public class RegistrationController {
             model.addAttribute("password2Error", "Пароль не может быть пустым");
         }
 
-            if(user.getPassword() != null && !user.getPassword().equals(passwordConfirm)){
+        if(user.getPassword() != null && !user.getPassword().equals(passwordConfirm)){
             model.addAttribute("passwordError", "Пароли должны совпадать");
         }
 
@@ -54,11 +54,11 @@ public class RegistrationController {
         }
 
         if (!userService.addUser(user)) {
-            model.addAttribute("usernameError", "User exists!");
+            model.addAttribute("usernameError", "Пользователь с таким именем уже существует!");
             return "registration";
         }
 
-        return "redirect:/login";
+        return "login";
     }
 
     @GetMapping("/activate/{code}")
@@ -67,10 +67,10 @@ public class RegistrationController {
 
         if (isActivated) {
             model.addAttribute("messageType", "success");
-            model.addAttribute("message", "User successfully activated");
+            model.addAttribute("message", "Пользователь успешно активирован");
         } else {
             model.addAttribute("messageType", "danger");
-            model.addAttribute("message", "Activation code is not found!");
+            model.addAttribute("message", "Код активации неверен!");
         }
         return "login";
     }

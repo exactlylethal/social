@@ -5,7 +5,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 
-public interface MessageRepo extends CrudRepository<Answer, Long> {
+public interface AnswerRepo extends CrudRepository<Answer, Long> {
     List<Answer> findByTag(String tag);
     List<Answer> findByAuthorIdAndPollId(Long author_id, Long poll_id);
 }

@@ -15,6 +15,10 @@ public class Vote {
     @JoinColumn(name="answer_id")
     private Answer answer;
 
+    public Vote() {
+
+    }
+
     public Long getId() {
         return id;
     }

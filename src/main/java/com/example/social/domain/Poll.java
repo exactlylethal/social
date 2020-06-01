@@ -24,6 +24,7 @@ public class Poll {
     private Set<Answer> answers;
 
     public Poll() {
+
     }
 
     public Poll(User user, String name){

@@ -21,12 +21,12 @@ public class User implements UserDetails {
     @NotBlank(message = "Пароль не может быть пустым")
     private String password;
 
-
     private boolean active;
 
     @Email(message = "Неверная почта")
     @NotBlank(message = "Почта не может быть пустой")
     private String email;
+
     private String activationCode;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
